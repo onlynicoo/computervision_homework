@@ -1,0 +1,24 @@
+READ ME:
+
+The *.cpp files are in src folder.
+In order to compile them, open a terminal in build folder and execute the following commands:
+cmake ..
+make 
+
+---------------------------------------------------------------------------------------------
+
+How to execute:
+Every executable takes in input the path of the image to elaborate.
+There is the default image in the src folder.
+To execute and test each one of the executables follows these steps:
+
+1_ Go to build folder
+2_ To execute:
+Task1: ./task1 ../src/street_scene.png
+Task3: ./task3 ../src/street_scene.png
+Task4: ./task4 ../src/street_scene.png
+
+---------------------------------------------------------------------------------------------
+
+Task3 and Task4 has a hidden feature.
+Right clicking on the Edge Map window they will print out the parameters related to the trackbars.

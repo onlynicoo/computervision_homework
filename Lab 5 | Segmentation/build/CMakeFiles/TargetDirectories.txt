@@ -1,0 +1,3 @@
+/Users/nicolalorenzon/Library/Mobile Documents/com~apple~CloudDocs/My Working Life/Uni/CV/Code/Lab 5  Segmentation-20230417/build/CMakeFiles/task1.dir
+/Users/nicolalorenzon/Library/Mobile Documents/com~apple~CloudDocs/My Working Life/Uni/CV/Code/Lab 5  Segmentation-20230417/build/CMakeFiles/edit_cache.dir
+/Users/nicolalorenzon/Library/Mobile Documents/com~apple~CloudDocs/My Working Life/Uni/CV/Code/Lab 5  Segmentation-20230417/build/CMakeFiles/rebuild_cache.dir
