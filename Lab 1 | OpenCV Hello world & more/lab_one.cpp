@@ -4,9 +4,9 @@
 //
 //  Created by Nicola Lorenzon on 06/03/23.
 //
-
-#include "lab_one.hpp"
+#include <stdio.h>
 #include <opencv2/highgui.hpp>
+
 int main(int argc, char** argv)
 {
 cv::Mat img = cv::imread(argv[1]);

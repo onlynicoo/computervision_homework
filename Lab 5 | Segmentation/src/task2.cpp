@@ -1,95 +1,69 @@
+#include <stdio.h>
 #include <iostream>
-#include "opencv2/imgproc.hpp"
-#include "opencv2/highgui.hpp"
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
+using namespace std;
 using namespace cv;
 
-Mat src, kernel = getStructuringElement(1, Size(5,5));
-Mat preprocessed_img, thresholded_img;
-int val = 1; 
-const char* preprocessing_window_name = "preprocessed_img";
-const char* thresholded_window_name = "thresholded_img";
+Mat K_Means(Mat Input, int K);
+
+int main(int argc, char** argv) {
+
+    const char* window_name = "window";
+	Mat input_image = imread(argv[1]);
+    Mat blurred_img;
+    
+    namedWindow( window_name, WINDOW_AUTOSIZE ); 
+    namedWindow( "asdf", WINDOW_AUTOSIZE );  
+	
+    cout << "Height: " << input_image.rows << ", Width: " << input_image.rows << ", Channels: " << input_image.channels() << endl;
+
+    GaussianBlur(input_image, blurred_img, Size(9, 9), 80);
+	
+    int Clusters = 3;
+	Mat clustered_image = K_Means(blurred_img, Clusters);
 
 
-cv::Mat max_filter(cv::Mat img, int dim) {
-    int r = img.rows;
-    int c = img.cols;
-    uchar max;
-    cv::Mat new_mat = img.clone();
-    if(dim%2 == 0) {
-        std::cout << "There's a problem with kernel dimension: Can't be even!";
-    }
-    else {
-        for(int i = 1 + (dim-1)/2; i < r - (dim-1)/2 - 1; i++) {
-            for(int j = 1 + (dim-1)/2; j < c - (dim-1)/2 - 1; j++) {
-                max = img.at<uchar>(i, j);
-                for(int kr = i - int((dim-1)/2); kr < i + int((dim-1)/2); kr++) {
-                    for(int kc = j - int((dim-1)/2); kc < j + int((dim-1)/2); kc++) {
-                        if(img.at<uchar>(kr, kc) > uchar(max)) {
-                            max = uchar(img.at<uchar>(kr, kc));
-                        }
-                    }
-                }
-                new_mat.at<uchar>(i, j) = max;
+	imshow(window_name, clustered_image);
+    imshow("asdf", blurred_img);
+	
+    waitKey();
+	return 0;
+}
+
+Mat K_Means(Mat img, int K) {
+	Mat labels;
+	Mat centers;
+    Mat gray_mask;
+
+	Mat samples(img.rows * img.cols, img.channels(), CV_32F);
+	for (int y = 0; y < img.rows; y++)
+		for (int x = 0; x < img.cols; x++)
+			for (int z = 0; z < img.channels(); z++)
+				if (img.channels() == 3) {
+					samples.at<float>(y + x * img.rows, z) = img.at<Vec3b>(y, x)[z];
+				}
+				else {
+					samples.at<float>(y + x * img.rows, z) = img.at<uchar>(y, x);
+				}
+
+	int attempts = 5;
+	kmeans(samples, K, labels, TermCriteria(TermCriteria::MAX_ITER|TermCriteria::EPS, 10000, 0.0001), attempts, KMEANS_PP_CENTERS, centers);
+
+    cvtColor(img, gray_mask, COLOR_BGR2GRAY);
+	for (int y = 0; y < img.rows; y++)
+		for (int x = 0; x < img.cols; x++)
+		{
+			int cluster_idx = labels.at<int>(y + x * img.rows, 0);
+            if (cluster_idx > 2) {
+                std::cout<< cluster_idx << std::endl;
             }
-        }
-    }
-    return new_mat;
-}
+            gray_mask.at<uchar>(y, x) = cluster_idx * 75;
+		}
+	
 
-static void Threshold(int, void*) {
-
-  src.copyTo(preprocessed_img);
-  
-  // aumenta contrasto
-  preprocessed_img.convertTo(preprocessed_img, -1, 6, 0); //qui mettere val
-  
-  // smooth
-  Mat a;
-  GaussianBlur(preprocessed_img, a, Size(5, 5), 70);
-  bilateralFilter(a, preprocessed_img, 5, 75, 75);
-
-  //imshow("prima", preprocessed_img);
-
-  dilate(preprocessed_img, preprocessed_img, kernel);
-  erode(preprocessed_img, preprocessed_img, kernel);
-
-  //std::cout<<preprocessed_img;
-  //imshow("dopo", preprocessed_img);
-  
-  // max
-  //preprocessed_img = max_filter(preprocessed_img, 5);
-
-  // smooth
-  GaussianBlur(preprocessed_img, preprocessed_img, Size(5, 5), 50);
-  imshow(preprocessing_window_name, preprocessed_img);
-
-  threshold(preprocessed_img, thresholded_img, 0, 255, THRESH_BINARY | THRESH_OTSU);
-  threshold(preprocessed_img, thresholded_img, 0, 255, THRESH_BINARY | THRESH_OTSU);
-  dilate(thresholded_img, preprocessed_img, kernel);
-  dilate(thresholded_img, preprocessed_img, kernel);
-  erode(thresholded_img, preprocessed_img, kernel);
-  erode(thresholded_img, preprocessed_img, kernel);
-  imshow(thresholded_window_name, thresholded_img);
-}
-
-int main( int argc, char** argv )
-{
-
-  src = cv::imread(argv[1], CV_16UC1);
-  src.copyTo(preprocessed_img);
-  src.copyTo(thresholded_img);
-  
-  namedWindow( preprocessing_window_name, WINDOW_AUTOSIZE ); 
-  namedWindow( thresholded_window_name, WINDOW_AUTOSIZE );  
-  //namedWindow( "prima", WINDOW_AUTOSIZE ); 
-  //namedWindow( "dopo", WINDOW_AUTOSIZE );  
-  imshow(preprocessing_window_name, preprocessed_img);
-  imshow(preprocessing_window_name, preprocessed_img);
-  
-  createTrackbar( "Val:", preprocessing_window_name, &val, 500, Threshold);
-
-  waitKey(0);
- 
-  return 0;
+    //imshow("clustered image", new_image);
+	return gray_mask;
 }

@@ -4,6 +4,8 @@
 //
 //  Created by Nicola Lorenzon on 06/03/23.
 //
+#ifndef MY_LIB
+#define MY_LIB
 
 #include <stdio.h>
 #include <iostream>
@@ -15,5 +17,4 @@ cv::Mat max_filter(cv::Mat img, int dim);
 cv::Mat median_filter(cv::Mat img, int dim);
 cv::Mat gaussian_filter(cv::Mat img, int dim);
 
-
-
+#endif // MY_LIB //
