@@ -5,7 +5,7 @@
 //  Created by Nicola Lorenzon on 06/03/23.
 //
 
-#include "lab_two_task2.hpp"
+#include <stdio.h>
 #include "my_lib.hpp"
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
