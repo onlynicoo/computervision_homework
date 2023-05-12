@@ -11,4 +11,4 @@ cv::Mat segment_with_masks(const cv::Mat img, const cv::Mat mask[3], const int m
 cv::Mat K_Means(cv::Mat img, int K);
 
 //
-#endif // UTILITIES_FUNCTION //d
+#endif // UTILITIES_FUNCTION //

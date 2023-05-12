@@ -4,8 +4,6 @@
 //
 //  Created by Nicola Lorenzon on 06/03/23.
 //
-
-#include "lab_two.hpp"
 #include<iostream>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -24,10 +22,7 @@ int main(int argc, char** argv)
     cv::cvtColor(img, gray_scale_img, cv::COLOR_BGR2GRAY);
     cv::imshow("gray_scale_image.jpg", gray_scale_img); 
     cv::waitKey(0);
-    
-    //cv::imwrite("/Users/nicolalorenzon/Library/Mobile Documents/com~apple~CloudDocs/Uni/CV/Code/lab two/image_grayscale.jpg", gray_scale_img);    
  
-    std::cout<<"sadocjsaoimckosakcks\n";
     cv::Mat hist;
     
     
