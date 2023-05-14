@@ -15,7 +15,7 @@ The aim of this homework is to segment cracks in different road surfaces. Did it
 
 # Lab 6
 The aim of this homework is to state whether two images have:<br>
-Similar content<br>
-Similar content but presents transformations such as rotation, different perspective, shadows difference etc<br>
-Different content<br>
+* Similar content<br>
+* Similar content but presents transformations such as rotation, different perspective, shadows difference etc<br>
+* Different content<br>
 Currently doing this evaluating SIFT and ORB features and matching them using cv::findHomography(...)
